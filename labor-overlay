@@ -10,6 +10,6 @@
       <name><![CDATA[Philipp Deppenwiese]]></name>
     </owner>
     <source type="git">git://github.com/das-labor/labor-overlay.git</source>
-    <feed>https://github.com/das-labor/labor-overlay/commits/master.labor</feed>
+    <feed>https://github.com/das-labor/labor-overlay/commits/master.atom</feed>
   </repo>
 </repositories>
