@@ -12,7 +12,7 @@ SRC_URI="http://download.${PN}.com/linux/${P}.tar.bz2"
 
 LICENSE="skype-4.0.0.7-copyright BSD MIT RSA W3C regexp-UofT no-source-code"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="pax_kernel +pulseaudio"
 
 QA_PREBUILT=opt/bin/${PN}
@@ -50,7 +50,7 @@ src_install() {
 	done
 
 	if use pax_kernel; then
-		pax-mark Cm "${ED}"/opti/bin/${PN}
+		pax-mark Cm "${ED}"/opt/bin/${PN}
 	fi
 
 	echo PRELINK_PATH_MASK=/opt/bin/${PN} > ${T}/99${PN}
