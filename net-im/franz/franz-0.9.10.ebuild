@@ -33,8 +33,8 @@ src_install() {
 	doins libnode.so
 	doins natives_blob.bin
 	doins snapshot_blob.bin
-	exeinto /opt/bin/
-	doexe Franz
+	doins Franz
+	fperms 775 /opt/franz/Franz
 	pax-mark m /opt/franz/Franz
 	dosym /opt/franz/Franz /opt/bin/Franz
 }
