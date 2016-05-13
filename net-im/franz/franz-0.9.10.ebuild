@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit pax-utils
+inherit pax-utils user
 
 DESCRIPTION="Multichat messenger"
 HOMEPAGE="http://meetfranz.com/"
@@ -23,7 +23,7 @@ S="${WORKDIR}"
 
 pkg_setup() {
 	if use pax_kernel ; then
-		enewuser franz -1 /bin/false -1 -1
+		enewuser franz -1 /bin/false /opt/franz -1
 	fi
 }
 
@@ -34,7 +34,7 @@ src_install() {
 	fi
 
 	if use pax_kernel ; then
-		pax-mark -pmr "${ED}opt/franz/Franz" || die
+		pax-mark -pmr "${S}/Franz" || die
 	fi
 	
 	dodir /opt/franz
