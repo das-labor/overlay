@@ -45,5 +45,6 @@ src_install() {
 	doins Franz
 	fperms 775 /opt/franz/Franz
 	
-	dosym /opt/franz/Franz /opt/bin/franz
+	exeinto /opt/bin
+	doexe "${FILESDIR}/franz"
 }
