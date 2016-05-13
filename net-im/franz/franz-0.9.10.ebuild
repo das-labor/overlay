@@ -13,8 +13,8 @@ SRC_URI="http://downloads.meetfranz.com/releases/${PV}/Franz-linux-x64-${PV}.tgz
 LICENSE="Propietary"
 SLOT="0"
 KEYWORDS="~amd64"
-
-RDEPEND=""
+IUSE="+sandbox"
+RDEPEND="sandbox? ( sys-apps/firejail )"
 DEPEND="${RDEPEND}"
 
 RESTRICT="strip binchecks"
@@ -22,6 +22,11 @@ RESTRICT="strip binchecks"
 S="${WORKDIR}"
 
 src_install() {
+	if use sandbox ; then
+		insinto /etc/firejail
+		doins "${FILESDIR}/franz.profile"
+	fi
+	
 	dodir /opt/franz
 	insinto /opt/franz
 	doins -r resources
@@ -35,6 +40,6 @@ src_install() {
 	doins snapshot_blob.bin
 	doins Franz
 	fperms 775 /opt/franz/Franz
-	pax-mark m /opt/franz/Franz
-	dosym /opt/franz/Franz /opt/bin/Franz
+	pax-mark erm /opt/franz/Franz
+	dosym /opt/franz/Franz /opt/bin/franz
 }
