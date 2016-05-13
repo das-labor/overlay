@@ -5,7 +5,6 @@ include /etc/firejail/disable-secret.inc
 include /etc/firejail/disable-common.inc
 
 private-dev
-private-tmp
 shell none
 noroot
 caps.drop all

@@ -44,7 +44,5 @@ src_install() {
 	doins snapshot_blob.bin
 	doins Franz
 	fperms 775 /opt/franz/Franz
-	
-	exeinto /opt/bin
-	doexe "${FILESDIR}/franz"
+	dosym /opt/franz/Franz /opt/bin/franz	
 }
