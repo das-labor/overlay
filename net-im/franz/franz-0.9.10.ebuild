@@ -23,7 +23,7 @@ S="${WORKDIR}"
 
 pkg_setup() {
 	if use pax_kernel ; then
-		enewuser franz -1 /bin/false /opt/franz -1
+		enewuser franz -1 -1 /opt/franz -1
 	fi
 }
 
