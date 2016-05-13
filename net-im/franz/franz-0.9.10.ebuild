@@ -21,12 +21,6 @@ RESTRICT="strip binchecks"
 
 S="${WORKDIR}"
 
-pkg_setup() {
-	if use pax_kernel ; then
-		enewuser franz -1 -1 /opt/franz
-	fi
-}
-
 src_install() {
 	if use sandbox ; then
 		insinto /etc/firejail
