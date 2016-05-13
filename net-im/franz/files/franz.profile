@@ -7,7 +7,8 @@ include /etc/firejail/disable-common.inc
 # chromium is distributed with a perl script on Arch
 # include /etc/firejail/disable-devel.inc
 #
-
+caps.drop all
+seccomp
 netfilter
 whitelist ${DOWNLOADS}
 whitelist ~/.config/Franz

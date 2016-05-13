@@ -45,11 +45,5 @@ src_install() {
 	doins Franz
 	fperms 775 /opt/franz/Franz
 	
-	if use pax_kernel ; then
-		insinto /opt/bin
-		doins "${FILESDIR}/franz"
-		fperms 775 /opt/bin/franz
-	else
-		dosym /opt/franz/Franz /opt/bin/franz
-	fi
+	dosym /opt/franz/Franz /opt/bin/franz
 }
