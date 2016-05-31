@@ -18,6 +18,10 @@ RDEPEND="dev-python/pyside
 
 DEPEND="${RDEPEND}"
 
+src_prepare() {
+	epatch "${FILESDIR}"/${PN}-${PV}.patch
+}
+
 src_install()
 {
 	distutils-r1_src_install || die
