@@ -14,7 +14,8 @@ inherit distutils-r1
 RDEPEND="dev-python/pyside
 	 dev-python/pycrypto
 	 dev-python/pyscard
-	 dev-python/pbkdf2"
+	 dev-python/pbkdf2
+	 dev-python/pyusb"
 
 DEPEND="${RDEPEND}"
 
