@@ -20,7 +20,7 @@ SRC_URI="
 	x86-fbsd? ( ${MY_DMF}/${MY_P}-gtk-linux-x86.zip )"
 
 LICENSE="CPL-1.0 LGPL-2.1 MPL-1.1"
-SLOT="4.2"
+SLOT="4.4"
 KEYWORDS="~amd64 ~ppc64 ~x86"
 IUSE="cairo gnome opengl webkit"
 
