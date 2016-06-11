@@ -1,0 +1,117 @@
+--- make_linux.mak-	2016-06-11 02:45:37.341987986 +0200
++++ make_linux.mak	2016-06-11 02:46:51.992078900 +0200
+@@ -77,7 +77,7 @@ GLXLIBS = -lGL -lGLU -lm
+ # Uncomment for Native Stats tool
+ #NATIVE_STATS = -DNATIVE_STATS
+ 
+-MOZILLACFLAGS = -O \
++MOZILLACFLAGS = $(CXXFLAGS) \
+ 	-DSWT_VERSION=$(SWT_VERSION) \
+ 	$(NATIVE_STATS) \
+ 	-DMOZILLA_STRICT_API=1 \
+@@ -118,7 +118,7 @@ XPCOMINIT_OBJECTS = swt.o xpcominit.o xp
+ WEBKIT_OBJECTS = swt.o webkit.o webkit_structs.o webkit_stats.o
+ GLX_OBJECTS = swt.o glx.o glx_structs.o glx_stats.o
+ 
+-CFLAGS = -O -Wall \
++CFLAGS += \
+ 		-DSWT_VERSION=$(SWT_VERSION) \
+ 		$(NATIVE_STATS) \
+ 		-DLINUX -DGTK \
+@@ -142,13 +142,13 @@ all: make_swt make_atk make_glx make_web
+ make_swt: $(SWT_LIB) $(SWTPI_LIB)
+ 
+ $(SWT_LIB): $(SWT_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(SWT_LIB) $(SWT_OBJECTS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(SWT_LIB) $(SWT_OBJECTS)
+ 
+ callback.o: callback.c callback.h
+ 	$(CC) $(CFLAGS) -DUSE_ASSEMBLER -c callback.c
+ 
+ $(SWTPI_LIB): $(SWTPI_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(SWTPI_LIB) $(SWTPI_OBJECTS) $(GTKLIBS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(SWTPI_LIB) $(SWTPI_OBJECTS) $(GTKLIBS)
+ 
+ swt.o: swt.c swt.h
+ 	$(CC) $(CFLAGS) -c swt.c
+@@ -167,7 +167,7 @@ os_stats.o: os_stats.c os_structs.h os.h
+ make_cairo: $(CAIRO_LIB)
+ 
+ $(CAIRO_LIB): $(CAIRO_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(CAIRO_LIB) $(CAIRO_OBJECTS) $(CAIROLIBS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(CAIRO_LIB) $(CAIRO_OBJECTS) $(CAIROLIBS)
+ 
+ cairo.o: cairo.c cairo.h swt.h
+ 	$(CC) $(CFLAGS) $(CAIROCFLAGS) -c cairo.c
+@@ -183,7 +183,7 @@ cairo_stats.o: cairo_stats.c cairo_struc
+ make_cde: $(CDE_LIB)
+ 
+ $(CDE_LIB): $(CDE_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(CDE_LIB) $(CDE_OBJECTS) $(CDE_LIBS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(CDE_LIB) $(CDE_OBJECTS) $(CDE_LIBS)
+ 
+ #
+ # AWT lib
+@@ -191,7 +191,7 @@ $(CDE_LIB): $(CDE_OBJECTS)
+ make_awt:$(AWT_LIB)
+ 
+ $(AWT_LIB): $(AWT_OBJECTS)
+-	$(CC) $(AWT_LFLAGS) -o $(AWT_LIB) $(AWT_OBJECTS) $(AWT_LIBS)
++	$(CC) $(LDFLAGS) $(AWT_LFLAGS) -o $(AWT_LIB) $(AWT_OBJECTS) $(AWT_LIBS)
+ 
+ #
+ # Atk lib
+@@ -199,7 +199,7 @@ $(AWT_LIB): $(AWT_OBJECTS)
+ make_atk: $(ATK_LIB)
+ 
+ $(ATK_LIB): $(ATK_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(ATK_LIB) $(ATK_OBJECTS) $(ATKLIBS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(ATK_LIB) $(ATK_OBJECTS) $(ATKLIBS)
+ 
+ atk.o: atk.c atk.h
+ 	$(CC) $(CFLAGS) $(ATKCFLAGS) -c atk.c
+@@ -216,7 +216,7 @@ atk_stats.o: atk_stats.c atk_structs.h a
+ make_gnome: $(GNOME_LIB)
+ 
+ $(GNOME_LIB): $(GNOME_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(GNOME_LIB) $(GNOME_OBJECTS) $(GNOMELIBS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(GNOME_LIB) $(GNOME_OBJECTS) $(GNOMELIBS)
+ 
+ gnome.o: gnome.c 
+ 	$(CC) $(CFLAGS) $(GNOMECFLAGS) -c gnome.c
+@@ -233,7 +233,7 @@ gnome_stats.o: gnome_stats.c gnome_stats
+ make_mozilla:$(MOZILLA_LIB)
+ 
+ $(MOZILLA_LIB): $(MOZILLA_OBJECTS)
+-	$(CXX) -o $(MOZILLA_LIB) $(MOZILLA_OBJECTS) $(MOZILLALFLAGS) ${MOZILLA_LIBS}
++	$(CXX) $(LDFLAGS) -o $(MOZILLA_LIB) $(MOZILLA_OBJECTS) $(MOZILLALFLAGS) ${MOZILLA_LIBS}
+ 
+ xpcom.o: xpcom.cpp
+ 	$(CXX) $(MOZILLACFLAGS) $(MOZILLAEXCLUDES) ${MOZILLA_INCLUDES} -c xpcom.cpp
+@@ -284,7 +284,7 @@ xpcom24_custom.o: xpcom24_custom.cpp
+ make_xpcominit:$(XPCOMINIT_LIB)
+ 
+ $(XPCOMINIT_LIB): $(XPCOMINIT_OBJECTS)
+-	$(CXX) -o $(XPCOMINIT_LIB) $(XPCOMINIT_OBJECTS) $(MOZILLALFLAGS) ${XULRUNNER_LIBS}
++	$(CXX) $(LDFLAGS) -o $(XPCOMINIT_LIB) $(XPCOMINIT_OBJECTS) $(MOZILLALFLAGS) ${XULRUNNER_LIBS}
+ 
+ xpcominit.o: xpcominit.cpp
+ 	$(CXX) $(MOZILLACFLAGS) ${XULRUNNER_INCLUDES} -c xpcominit.cpp
+@@ -301,7 +301,7 @@ xpcominit_stats.o: xpcominit_stats.cpp
+ make_webkit: $(WEBKIT_LIB)
+ 
+ $(WEBKIT_LIB): $(WEBKIT_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(WEBKIT_LIB) $(WEBKIT_OBJECTS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(WEBKIT_LIB) $(WEBKIT_OBJECTS)
+ 
+ webkit.o: webkitgtk.c 
+ 	$(CC) $(CFLAGS) $(WEBKITCFLAGS) -c webkitgtk.c -o webkit.o
+@@ -318,7 +318,7 @@ webkit_stats.o: webkitgtk_stats.c webkit
+ make_glx: $(GLX_LIB)
+ 
+ $(GLX_LIB): $(GLX_OBJECTS)
+-	$(CC) $(LFLAGS) -o $(GLX_LIB) $(GLX_OBJECTS) $(GLXLIBS)
++	$(CC) $(LDFLAGS) $(LFLAGS) -o $(GLX_LIB) $(GLX_OBJECTS) $(GLXLIBS)
+ 
+ glx.o: glx.c 
+ 	$(CC) $(CFLAGS) $(GLXCFLAGS) -c glx.c
