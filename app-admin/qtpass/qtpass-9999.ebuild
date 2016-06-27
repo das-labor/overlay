@@ -36,15 +36,6 @@ DEPEND="${RDEPEND}
 	)
 	!qt5? ( dev-qt/qtsvg:4 )"
 
-src_prepare() {
-	# Modify install path
-	sed -i "s/target.path = \$\$PREFIX/target.path = \$\$PREFIX\/bin/" \
-		${PN}.pro \
-		|| die "sed failed to modify install path for ${PN}.pro"
-
-	epatch_user
-}
-
 src_configure() {
 	if use qt5 ; then
 		eqmake5 PREFIX="${D}"/usr
