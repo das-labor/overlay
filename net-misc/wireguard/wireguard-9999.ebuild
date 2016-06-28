@@ -30,6 +30,18 @@ S="${WORKDIR}/${PN}-${PV}/src"
 
 pkg_setup() {
 	linux-mod_pkg_setup
+
+	if kernel_is lt 4 1 0 ; then
+		eerror "Wireguard can be build against >= 4.1.0 kernel."
+		die "Kernel is too old."
+	fi
+
+	CONFIG_CHECK="~NET_UDP_TUNNEL ~IPV6 ~NETFILTER_XT_MATCH_HASHLIMIT"
+	ERROR_NET_UDP_TUNNEL="Your kernel needs NET_UDP_TUNNEL module for wireguard to work."
+	WARNING_IPV6="Your kernel needs ipv6 for wireguard IPV6 support."
+	ERROR_NETFILTER_XT_MATCH_HASHLIMIT="Your kernel needs the NETFILTER_XT_MATCH_HASHLIMIT module for wireguard to work."
+	linux-info_pkg_setup
+
 	MODULE_NAMES="wireguard(net:)"
 	BUILD_PARAMS="KSRC=${KV_DIR} KBUILD=${KV_OUT_DIR}"
 }
