@@ -37,7 +37,7 @@ pkg_setup() {
 	fi
 
 	CONFIG_CHECK="~NET_UDP_TUNNEL ~IPV6 ~NETFILTER_XT_MATCH_HASHLIMIT"
-	ERROR_NET_UDP_TUNNEL="Your kernel needs NET_UDP_TUNNEL module for wireguard to work."
+	ERROR_NET_UDP_TUNNEL="Your kernel needs NET_UDP_TUNNEL module for wireguard to work. Please activate VXLAN support."
 	WARNING_IPV6="Your kernel needs ipv6 for wireguard IPV6 support."
 	ERROR_NETFILTER_XT_MATCH_HASHLIMIT="Your kernel needs the NETFILTER_XT_MATCH_HASHLIMIT module for wireguard to work."
 	linux-info_pkg_setup
