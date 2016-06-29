@@ -21,7 +21,6 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="+tools"
-RESTRICT="userpriv"
 
 DEPEND="net-libs/libmnl"
 RDEPEND="${DEPEND}"
