@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit eutils rpm
+inherit eutils rpm pax-utils
 
 DESCRIPTION="A messaging app for teams"
 HOMEPAGE="https://slack.com/"
@@ -37,5 +37,6 @@ src_prepare() {
 
 src_install() {
 	cp -a . "${D}" || die
+	pax-mark rm /usr/lib/slack/slack
 	make_desktop_entry ${PN} "Slack" /usr/share/pixmaps/${PN}.png "Network"
 }
