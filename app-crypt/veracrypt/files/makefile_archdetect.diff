@@ -1,0 +1,11 @@
+--- ../src.old/Makefile	2016-08-05 13:22:29.075722219 +0200
++++ Makefile	2016-08-05 13:24:50.218778845 +0200
+@@ -128,7 +128,7 @@
+ 
+ export CPU_ARCH ?= unknown
+ 
+-ARCH = $(shell uname -p)
++ARCH = $(shell uname -m)
+ ifeq "$(ARCH)" "unknown"
+ 	ARCH = $(shell uname -m)
+ endif
