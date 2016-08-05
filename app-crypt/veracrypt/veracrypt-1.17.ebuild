@@ -44,8 +44,8 @@ src_prepare() {
 		sed -e "s/WX_CONFIG_LIBS := base/&,core/" -i Main/Main.make || die "sed Main/Main.make failed"
 	fi
 
-	epatch "${FILESDIR}/makefile-archdetect.diff"
-	epatch "${FILESDIR}/execstack-fix.diff"
+	epatch "${FILESDIR}/makefile_archdetect.diff"
+	epatch "${FILESDIR}/execstack_fix.diff"
 	#epatch "${FILESDIR}/${PN}-7.1a-build.patch"
 }
 
