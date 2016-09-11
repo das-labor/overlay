@@ -37,6 +37,6 @@ src_prepare() {
 
 src_install() {
 	cp -a . "${D}" || die
-	pax-mark rm /usr/lib/slack/slack
+	pax-mark rm usr/lib/slack/slack
 	make_desktop_entry ${PN} "Slack" /usr/share/pixmaps/${PN}.png "Network"
 }
