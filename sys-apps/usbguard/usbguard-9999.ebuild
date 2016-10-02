@@ -90,6 +90,12 @@ src_configure() {
 }
 
 src_compile() {
+	if use qt5; then
+		export QT_SELECT=qt5
+	elif use qt4; then
+		export QT_SELECT=qt4
+	fi
+
 	emake
 }
 
