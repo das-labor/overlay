@@ -16,8 +16,8 @@ SLOT="0"
 IUSE="debug test"
 
 RDEPEND="
-	sci-mathematics/glpk
 	dev-qt/qtgraphicaleffects:5
+	dev-qt/qtsvg:5
 	dev-qt/qtquickcontrols:5[widgets]"
 DEPEND="${RDEPEND}
 	dev-lang/rust
