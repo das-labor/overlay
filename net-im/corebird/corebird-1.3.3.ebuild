@@ -34,6 +34,8 @@ DEPEND="${RDEPEND}
 	>=dev-util/intltool-0.40
 	sys-apps/sed
 	virtual/pkgconfig
+	=dev-lang/vala-0.28
+	=sys-devel/automake-1.14
 "
 
 src_prepare() {
