@@ -4,7 +4,7 @@
 	<repo quality="experimental" status="unofficial">
 		<name>das-labor</name>
 		<description lang="en">Gentoo overlay from Hackerspace Bochum</description>
-		<homepage>https://github.com/das-labor/labor-overlay</homepage>
+		<homepage>https://github.com/das-labor/overlay</homepage>
 		<owner type="person">
 			<email>zaolin@das-labor.org</email>
 			<name>Philipp Deppenwiese</name>
@@ -13,7 +13,7 @@
 			<email>kai@gnupg.org</email>
 			<name>Kai Michaelis</name>
 		</owner>
-		<source type="git">https://github.com/das-labor/labor-overlay.git</source>
-		<feed>https://github.com/das-labor/labor-overlay/commits/master.atom</feed>
+		<source type="git">https://github.com/das-labor/overlay.git</source>
+		<feed>https://github.com/das-labor/overlay/commits/master.atom</feed>
 	</repo>
 </repositories>
