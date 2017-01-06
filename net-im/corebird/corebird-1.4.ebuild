@@ -3,7 +3,7 @@
 # $Id$
 
 EAPI=5
-VALA_MIN_API_VERSION=0.26
+VALA_MIN_API_VERSION=0.34
 AUTOTOOLS_AUTORECONF=1
 AUTOTOOLS_IN_SOURCE_BUILD=1
 
@@ -19,6 +19,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="debug gstreamer"
 
 RDEPEND="
+	>=app-text/gspell-1.2.2[vala]
 	dev-db/sqlite:3
 	>=dev-libs/glib-2.44:2
 	dev-libs/json-glib
@@ -29,14 +30,14 @@ RDEPEND="
 				 media-plugins/gst-plugins-soup:1.0 )
 	>=net-libs/libsoup-2.42.3.1
 	>=net-libs/rest-0.7.93:0.7
-	>=x11-libs/gtk+-3.16:3
+	>=x11-libs/gtk+-3.18.9
 "
 DEPEND="${RDEPEND}
 	$(vala_depend)
 	>=dev-util/intltool-0.40
 	sys-apps/sed
 	virtual/pkgconfig
-	dev-lang/vala:0.28
+	dev-lang/vala:0.34
 	sys-devel/automake:1.14
 "
 
