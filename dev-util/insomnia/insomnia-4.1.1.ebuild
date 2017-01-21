@@ -40,4 +40,5 @@ src_prepare() {
 src_install() {
 	cp -a usr opt "${D}" || die
 	pax-mark rm "${ED}/opt/Insomnia/insomnia"
+	dosym /opt/Insomnia/insomnia /usr/bin/insomnia
 }
