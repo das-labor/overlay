@@ -8,9 +8,9 @@ inherit pax-utils user
 
 DESCRIPTION="Multichat messenger"
 HOMEPAGE="http://meetfranz.com/"
-SRC_URI="http://downloads.meetfranz.com/releases/${PV}/Franz-linux-x64-${PV}.tgz"
+SRC_URI="https://github.com/meetfranz/franz-app/releases/download/${PV}/Franz-linux-x64-${PV}.tgz"
 
-LICENSE="Propietary"
+LICENSE="Franz"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+sandbox pax_kernel"
@@ -31,18 +31,17 @@ src_install() {
 		pax-mark -pmr "${S}/Franz" || die
 	fi
 	
-	dodir /opt/franz
-	insinto /opt/franz
+	dodir /opt/Franz
+	insinto /opt/Franz
 	doins -r resources
 	doins -r locales
 	doins content_shell.pak
 	doins icudtl.dat
 	doins libffmpeg.so
-	doins libgcrypt.so.11
 	doins libnode.so
 	doins natives_blob.bin
 	doins snapshot_blob.bin
 	doins Franz
-	fperms 775 /opt/franz/Franz
-	dosym /opt/franz/Franz /opt/bin/franz	
+	fperms 775 /opt/Franz/Franz
+	dosym /opt/Franz/Franz /usr/bin/franz	
 }
