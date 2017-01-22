@@ -34,7 +34,8 @@ DEPEND="dev-python/beautifulsoup:python-2
 	dev-python/chardet[python_targets_python2_7?]
 	dev-python/netifaces[python_targets_python2_7?]
 	>=dev-python/lxml-3.3.0[python_targets_python2_7?]
-	dev-python/zeroconf[python_targets_python2_7?]"
+	dev-python/zeroconf[python_targets_python2_7?]
+	dev-python/netaddr[python_targets_python2_7?]"
 RDEPEND="${DEPEND}
 				media-video/ffmpeg
 				"
