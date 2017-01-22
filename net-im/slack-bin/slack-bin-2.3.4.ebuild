@@ -7,7 +7,7 @@ inherit eutils rpm pax-utils
 
 DESCRIPTION="A messaging app for teams"
 HOMEPAGE="https://slack.com/"
-SRC_URI="https://downloads.slack-edge.com/linux_releases/${P}-0.1.fc21.x86_64.rpm"
+SRC_URI="https://downloads.slack-edge.com/linux_releases/slack-${PV}-0.1.fc21.x86_64.rpm"
 LICENSE="Slack"
 RESTRICT="mirror"
 

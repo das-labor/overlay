@@ -7,7 +7,7 @@ inherit eutils pax-utils
 
 DESCRIPTION="The most intuitive cross-platform REST API Client"
 HOMEPAGE="https://insomnia.rest/"
-SRC_URI="https://downloads.insomnia.rest/linux/${PN}_${PV}_amd64.deb"
+SRC_URI="https://downloads.insomnia.rest/linux/insomnia_${PV}_amd64.deb"
 LICENSE="Insomnia"
 RESTRICT="mirror"
 
@@ -19,7 +19,7 @@ QA_PREBUILT="usr/lib/slack/*"
 
 DEPEND=""
 RDEPEND="
-	gnome-base/gconf	
+	gnome-base/gconf
 	x11-libs/libnotify
 	dev-libs/libappindicator
 	x11-libs/libXtst

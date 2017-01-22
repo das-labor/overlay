@@ -13,11 +13,11 @@ inherit eutils python-r1 git-r3
 DESCRIPTION="A lightweight streaming server which brings DLNA / UPNP and Chromecast support to PulseAudio and Linux"
 HOMEPAGE="https://github.com/masmu/pulseaudio-dlna"
 EGIT_REPO_URI="https://github.com/masmu/pulseaudio-dlna.git"
-EGIT_COMMIT="0.5.2"
+EGIT_COMMIT="master"
 
 LICENSE="GPLv3"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="systemd"
 
 DEPEND="dev-python/beautifulsoup:python-2

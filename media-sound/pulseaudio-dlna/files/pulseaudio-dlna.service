@@ -1,0 +1,10 @@
+[Unit]
+Description=PulseAudio DLNA
+After=network.target sound.target pulseaudio.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pulseaudio-dlna --auto-reconnect --encoder-backend=ffmpeg
+
+[Install]
+WantedBy=default.target
