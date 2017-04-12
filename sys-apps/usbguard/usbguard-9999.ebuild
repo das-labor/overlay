@@ -111,3 +111,8 @@ src_install() {
 	insinto /etc/usbguard
 	doins usbguard-daemon.conf
 }
+
+pkg_postinst() {
+    elog "You will need to allow access to your user for accessing the QT gui."
+    elog "Execute as root. usbguard add-user YOUR_USERNAME --devices ALL --exceptions ALL"
+}
