@@ -29,7 +29,6 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}
 	dev-python/dbus-python[${PYTHON_USEDEP}]
-	dev-python/PyQt5[${PYTHON_USEDEP}]
+	dev-python/PyQt5[${PYTHON_USEDEP},gui,network,webkit,widgets]
 	dev-qt/qtwebkit:5"
 RDEPEND="${DEPEND}"
-
