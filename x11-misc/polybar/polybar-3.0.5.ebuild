@@ -14,7 +14,7 @@ EGIT_COMMIT="${PV}"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="x86 amd64"
 
 IUSE="alsa i3wm mpd github +network"
 RDEPEND="
