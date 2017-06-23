@@ -9,7 +9,7 @@ DESCRIPTION="Library and tool for personalization of Yubico's YubiKey NEO"
 SRC_URI="http://opensource.yubico.com/yubioath-desktop/releases/${P}.tar.gz"
 HOMEPAGE="http://opensource.yubico.com/yubioath-desktop"
 
-#KEYWORDS="~amd64"
+KEYWORDS="amd64 x86"
 SLOT="4"
 LICENSE="BSD-2"
 USE="broken"
