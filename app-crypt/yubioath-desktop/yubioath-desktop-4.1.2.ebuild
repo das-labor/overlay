@@ -14,7 +14,19 @@ SLOT="4"
 LICENSE="BSD-2"
 USE="broken"
 
-RDEPEND="dev-qt/qtsingleapplication"
+RDEPEND="dev-qt/qtsingleapplication
+		 app-crypt/yubikey-manager
+		 sys-apps/pcsc-lite
+		 app-crypt/ccid
+		 dev-python/pyside
+		 dev-python/pyscard
+		 dev-python/pbkdf2
+		 dev-python/pyside-tools
+		 dev-python/setuptools
+		 dev-python/pycrypto
+		 sys-auth/yubikey-personalization-gui
+		 dev-python/click
+		 dev-python/pyotherside"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}"
