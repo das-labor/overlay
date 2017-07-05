@@ -1,0 +1,284 @@
+From 341b8f701525bedb049aba15a2d2be10d9d62a64 Mon Sep 17 00:00:00 2001
+From: Rod Vagg <rod@vagg.org>
+Date: Sun, 30 Oct 2016 23:39:01 +1100
+Subject: [PATCH] crypto: initial LibreSSL support
+
+---
+ vendor/node/lib/_tls_common.js                                 |  8 +++-
+ vendor/node/lib/_tls_wrap.js                                   | 44 ++++++++++++++--------
+ vendor/node/node.gyp                                           |  2 +-
+ vendor/node/src/node.cc                                        | 11 ++++--
+ vendor/node/src/node_crypto.cc                                 | 38 +++++++++++++------
+ vendor/node/src/tls_wrap.cc                                    |  2 +
+ 11 files changed, 108 insertions(+), 36 deletions(-)
+
+diff --git a/vendor/node/lib/_tls_common.js b/vendor/node/lib/_tls_common.js
+index 56baf7bde8c..dcd7143013d 100644
+--- a/vendor/node/lib/_tls_common.js
++++ b/vendor/node/lib/_tls_common.js
+@@ -10,6 +10,9 @@ var crypto = null;
+
+ const binding = process.binding('crypto');
+ const NativeSecureContext = binding.SecureContext;
++const isLibreSSL = process.versions.openssl &&
++                   /LibreSSL$/.test(process.versions.openssl);
++
+
+ function SecureContext(secureProtocol, secureOptions, context) {
+   if (!(this instanceof SecureContext)) {
+@@ -138,7 +141,10 @@ exports.createSecureContext = function createSecureContext(options, context) {
+   // freelist.)
+   if (options.singleUse) {
+     c.singleUse = true;
+-    c.context.setFreeListLength(0);
++    if (!isLibreSSL) {
++      c.context.setFreeListLength(0);
++    } // else TODO check for possible leak
++      // https://github.com/nodejs/node/issues/1522
+   }
+
+   return c;
+diff --git a/vendor/node/lib/_tls_wrap.js b/vendor/node/lib/_tls_wrap.js
+index ebd36519cf1..a5c64d8e760 100644
+--- a/vendor/node/lib/_tls_wrap.js
++++ b/vendor/node/lib/_tls_wrap.js
+@@ -16,6 +16,8 @@ const Timer = process.binding('timer_wrap').Timer;
+ const tls_wrap = process.binding('tls_wrap');
+ const TCP = process.binding('tcp_wrap').TCP;
+ const Pipe = process.binding('pipe_wrap').Pipe;
++const isLibreSSL = process.versions.openssl &&
++                   /LibreSSL$/.test(process.versions.openssl);
+
+ function onhandshakestart() {
+   debug('onhandshakestart');
+@@ -155,14 +157,20 @@ function onclienthello(hello) {
+     if (err)
+       return self.destroy(err);
+
+-    self._handle.endParser();
++    if (isLibreSSL) {
++      oncertcb(hello, self, session && session.servername || hello.servername);
++    } else {
++      self._handle.endParser();
++    }
+   });
+ }
+
+
+-function oncertcb(info) {
+-  var self = this;
+-  var servername = info.servername;
++function oncertcb(info, self, servername) {
++  if (!self)
++    self = this;
++  if (!servername)
++    servername = info.servername;
+
+   loadSNI(self, servername, function(err, ctx) {
+     if (err)
+@@ -174,10 +182,14 @@ function oncertcb(info) {
+       if (!self._handle)
+         return self.destroy(new Error('Socket is closed'));
+
+-      try {
+-        self._handle.certCbDone();
+-      } catch (e) {
+-        self.destroy(e);
++      if (isLibreSSL) {
++        self._handle.endParser();
++      } else {
++        try {
++          self._handle.certCbDone();
++        } catch (e) {
++          self.destroy(e);
++        }
+       }
+     });
+   });
+@@ -1072,13 +1084,15 @@ exports.connect = function(...args /* [port,] [host,] [options,] [cb] */) {
+   socket.on('secure', function() {
+     // Check the size of DHE parameter above minimum requirement
+     // specified in options.
+-    var ekeyinfo = socket.getEphemeralKeyInfo();
+-    if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
+-      var err = new Error('DH parameter size ' + ekeyinfo.size +
+-                          ' is less than ' + options.minDHSize);
+-      socket.emit('error', err);
+-      socket.destroy();
+-      return;
++    if (!isLibreSSL) {
++      var ekeyinfo = socket.getEphemeralKeyInfo();
++      if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
++        var err = new Error('DH parameter size ' + ekeyinfo.size +
++                            ' is less than ' + options.minDHSize);
++        socket.emit('error', err);
++        socket.destroy();
++        return;
++      }
+     }
+
+     var verifyError = socket._handle.verifyError();
+diff --git a/vendor/node/node.gyp b/vendor/node/node.gyp
+index 673a1d10eff..9273eafb58e 100644
+--- a/vendor/node/node.gyp
++++ b/vendor/node/node.gyp
+@@ -381,7 +381,7 @@
+               'conditions': [
+                 # -force_load or --whole-archive are not applicable for
+                 # the static library
+-                [ 'node_target_type!="static_library"', {
++                [ 'node_target_type!="static_library" and node_shared_openssl=="false"', {
+                   'xcode_settings': {
+                     'OTHER_LDFLAGS': [
+                       '-Wl,-force_load,<(PRODUCT_DIR)/<(OPENSSL_PRODUCT)',
+diff --git a/vendor/node/src/node.cc b/vendor/node/src/node.cc
+index 525f28c1148..f22b68a5dee 100644
+--- a/vendor/node/src/node.cc
++++ b/vendor/node/src/node.cc
+@@ -3126,10 +3126,13 @@ void SetupProcessObject(Environment* env,
+         break;
+       }
+     }
+-    READONLY_PROPERTY(
+-        versions,
+-        "openssl",
+-        OneByteString(env->isolate(), &OPENSSL_VERSION_TEXT[i], j - i));
++    Local<String> sslversion =
++        OneByteString(env->isolate(), &OPENSSL_VERSION_TEXT[i], j - i);
++# ifdef LIBRESSL_VERSION_NUMBER
++    sslversion = String::Concat(sslversion,
++                                OneByteString(env->isolate(), "-LibreSSL"));
++# endif
++    READONLY_PROPERTY(versions, "openssl", sslversion);
+   }
+ #endif
+
+diff --git a/vendor/node/src/node_crypto.cc b/vendor/node/src/node_crypto.cc
+index f959f0a33c4..f18117a41c2 100644
+--- a/vendor/node/src/node_crypto.cc
++++ b/vendor/node/src/node_crypto.cc
+@@ -523,8 +523,12 @@ int SSL_CTX_use_certificate_chain(SSL_CTX* ctx,
+     for (int i = 0; i < sk_X509_num(extra_certs); i++) {
+       X509* ca = sk_X509_value(extra_certs, i);
+
++#ifdef LIBRESSL_VERSION_NUMBER
++      r = SSL_CTX_add_extra_chain_cert(ctx, ca);
++#else
+       // NOTE: Increments reference count on `ca`
+       r = SSL_CTX_add1_chain_cert(ctx, ca);
++#endif  // LIBRESSL_VERSION_NUMBER
+
+       if (!r) {
+         ret = 0;
+@@ -987,7 +984,7 @@ void SecureContext::SetTicketKeys(const FunctionCallbackInfo<Value>& args) {
+ void SecureContext::SetFreeListLength(const FunctionCallbackInfo<Value>& args) {
+   SecureContext* wrap = Unwrap<SecureContext>(args.Holder());
+
+-  wrap->ctx_->freelist_max_len = args[0]->Int32Value();
++  //wrap->ctx_->freelist_max_len = args[0]->Int32Value();
+ }
+
+
+@@ -1930,6 +1934,10 @@ void SSLWrap<Base>::RequestOCSP(
+ template <class Base>
+ void SSLWrap<Base>::GetEphemeralKeyInfo(
+     const v8::FunctionCallbackInfo<v8::Value>& args) {
++#ifdef LIBRESSL_VERSION_NUMBER
++  Environment* env = Environment::GetCurrent(args);
++  env->ThrowError("getEphemeralKeyInfo() not supported when using LibreSSL");
++#else
+   Base* w;
+   ASSIGN_OR_RETURN_UNWRAP(&w, args.Holder());
+   Environment* env = Environment::GetCurrent(args);
+@@ -1968,7 +1976,8 @@ void SSLWrap<Base>::GetEphemeralKeyInfo(
+     EVP_PKEY_free(key);
+   }
+
+-  return args.GetReturnValue().Set(info);
++  args.GetReturnValue().Set(info);
++#endif  // LIBRESSL_VERSION_NUMBER
+ }
+
+
+@@ -2449,8 +2458,9 @@ void SSLWrap<Base>::CertCbDone(const FunctionCallbackInfo<Value>& args) {
+     w->sni_context_.Reset();
+     w->sni_context_.Reset(env->isolate(), ctx);
+
+-    int rv;
++    int rv = 1;
+
++#ifndef LIBRESSL_VERSION_NUMBER
+     // NOTE: reference count is not increased by this API methods
+     X509* x509 = SSL_CTX_get0_certificate(sc->ctx_);
+     EVP_PKEY* pkey = SSL_CTX_get0_privatekey(sc->ctx_);
+@@ -2463,6 +2473,8 @@ void SSLWrap<Base>::CertCbDone(const FunctionCallbackInfo<Value>& args) {
+       rv = SSL_use_PrivateKey(w->ssl_, pkey);
+     if (rv && chain != nullptr)
+       rv = SSL_set1_chain(w->ssl_, chain);
++#endif  // LIBRESSL_VERSION_NUMBER
++
+     if (rv)
+       rv = w->SetCACerts(sc);
+     if (!rv) {
+@@ -2526,9 +2538,11 @@ void SSLWrap<Base>::SetSNIContext(SecureContext* sc) {
+
+ template <class Base>
+ int SSLWrap<Base>::SetCACerts(SecureContext* sc) {
++#ifndef LIBRESSL_VERSION_NUMBER
+   int err = SSL_set1_verify_cert_store(ssl_, SSL_CTX_get_cert_store(sc->ctx_));
+   if (err != 1)
+     return err;
++#endif  // LIBRESSL_VERSION_NUMBER
+
+   STACK_OF(X509_NAME)* list = SSL_dup_CA_list(
+       SSL_CTX_get_client_CA_list(sc->ctx_));
+@@ -2841,7 +2855,7 @@ inline int VerifyCallback(int preverify_ok, X509_STORE_CTX* ctx) {
+   SSL* ssl = static_cast<SSL*>(
+       X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx()));
+
+-  if (SSL_is_server(ssl))
++  if (ssl->server)
+     return 1;
+
+   // Client needs to check if the server cert is listed in the
+@@ -2924,7 +2938,9 @@ void Connection::New(const FunctionCallbackInfo<Value>& args) {
+
+   InitNPN(sc);
+
++#ifndef LIBRESSL_VERSION_NUMBER
+   SSL_set_cert_cb(conn->ssl_, SSLWrap<Connection>::SSLCertCallback, conn);
++#endif  // LIBRESSL_VERSION_NUMBER
+
+ #ifdef SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
+   if (is_server) {
+@@ -5976,11 +5992,11 @@ void SetEngine(const FunctionCallbackInfo<Value>& args) {
+ #endif  // !OPENSSL_NO_ENGINE
+
+ void GetFipsCrypto(const FunctionCallbackInfo<Value>& args) {
+-  if (FIPS_mode()) {
+-    args.GetReturnValue().Set(1);
+-  } else {
+-    args.GetReturnValue().Set(0);
+-  }
++#ifdef NODE_FIPS_MODE
++  args.GetReturnValue().Set(FIPS_mode());
++#else
++  args.GetReturnValue().Set(0);
++#endif
+ }
+
+ void SetFipsCrypto(const FunctionCallbackInfo<Value>& args) {
+diff --git a/vendor/node/src/tls_wrap.cc b/vendor/node/src/tls_wrap.cc
+index d56128fec6c..4af2913e17b 100644
+--- a/vendor/node/src/tls_wrap.cc
++++ b/vendor/node/src/tls_wrap.cc
+@@ -142,7 +142,9 @@ void TLSWrap::InitSSL() {
+
+   InitNPN(sc_);
+
++#ifndef LIBRESSL_VERSION_NUMBER
+   SSL_set_cert_cb(ssl_, SSLWrap<TLSWrap>::SSLCertCallback, this);
++#endif  // LIBRESSL_VERSION_NUMBER
+
+   if (is_server()) {
+     SSL_set_accept_state(ssl_);
