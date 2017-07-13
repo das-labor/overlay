@@ -55,9 +55,8 @@ LIBCC_S="${BRIGHTRAY_S}/vendor/libchromiumcontent"
 LICENSE="BSD"
 SLOT="$(get_version_component_range 1-2)"
 KEYWORDS="~amd64"
-IUSE="+ssl custom-cflags cups gnome gnome-keyring hidpi libressl kerberos lto neon pic +proprietary-codecs pulseaudio selinux +system-ffmpeg +tcmalloc"
+IUSE="bundled-ssl custom-cflags cups gnome gnome-keyring hidpi kerberos lto neon pic +proprietary-codecs pulseaudio selinux +system-ffmpeg +tcmalloc"
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
-REQUIRED_USE="ssl? ( !libressl )"
 
 # Native Client binaries are compiled with different set of flags, bug #452066.
 QA_FLAGS_IGNORED=".*\.nexe"
@@ -123,8 +122,7 @@ RDEPEND="!<dev-util/electron-0.36.12-r4
 	kerberos? ( virtual/krb5 )
 	>=net-libs/http-parser-2.6.2:=
 	>=dev-libs/libuv-1.8.0:=
-	ssl? ( >=dev-libs/openssl-1.0.2g:0=[-bindist] )
-	libressl? ( dev-libs/libressl )"
+	!bundled-ssl? ( >=dev-libs/openssl-1.0.2g:0=[-bindist] )"
 DEPEND="${RDEPEND}
 	!arm? (
 		dev-lang/yasm
@@ -302,7 +300,6 @@ src_prepare() {
 	epatch "${FILESDIR}/chromium-lto-fixes-r1.patch"
 	epatch "${FILESDIR}/chromium-icu-58-r1.patch"
 	epatch "${FILESDIR}/chromium-cups-fix.patch"
-	epatch "${FILESDIR}/chromium-libressl.patch"
 	# libcc chromium patches
 	_unnest_patches "${LIBCC_S}/patches"
 
@@ -661,10 +658,12 @@ src_configure() {
 	echo '#!/usr/bin/env python' > tools/gyp_node.py || die
 	# --shared-libuv cannot be used as electron's node fork
 	# patches uv_loop structure.
-	./configure --shared --without-bundled-v8 --shared-openssl \
+	local nodeconf=""
+	use bundled-ssl || nodeconf+=( --shared-openssl )
+	./configure --shared --without-bundled-v8 \
 				--shared-http-parser --shared-zlib --without-npm \
 				--with-intl=system-icu --without-dtrace \
-				--dest-cpu=${target_arch} --prefix="" || die
+				--dest-cpu=${target_arch} --prefix="" "${nodeconf[@]}" || die
 	popd > /dev/null || die
 
 	# libchromiumcontent configuration
