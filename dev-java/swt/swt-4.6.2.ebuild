@@ -7,7 +7,7 @@ EAPI="5"
 inherit eutils flag-o-matic java-pkg-2 java-ant-2 toolchain-funcs java-osgi
 
 MY_PV="${PV/_rc/RC}"
-MY_DMF="http://archive.eclipse.org/eclipse/downloads/drops4/R-${MY_PV}-201502041700"
+MY_DMF="http://archive.eclipse.org/eclipse/downloads/drops4/R-${MY_PV}-201611241400"
 MY_P="${PN}-${MY_PV}"
 
 DESCRIPTION="GTK based SWT Library"
@@ -20,7 +20,7 @@ SRC_URI="
 	x86-fbsd? ( ${MY_DMF}/${MY_P}-gtk-linux-x86.zip )"
 
 LICENSE="CPL-1.0 LGPL-2.1 MPL-1.1"
-SLOT="4.4"
+SLOT="4.6"
 KEYWORDS="~amd64 ~ppc64 ~x86"
 IUSE="cairo gnome opengl webkit"
 
