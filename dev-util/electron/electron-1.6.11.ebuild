@@ -669,7 +669,7 @@ src_configure() {
 	# --shared-libuv cannot be used as electron's node fork
 	# patches uv_loop structure.
 	use bundled-ssl || nodeconf+=( --shared-openssl )	
-	./configure --shared --without-bundled-v8 --shared-openssl \
+	./configure --shared --without-bundled-v8 \
 		--shared-http-parser --shared-zlib --without-npm \
 		--with-intl=system-icu --without-dtrace \
 		--dest-cpu=${target_arch} --prefix="" "${nodeconf[@]}" || die
