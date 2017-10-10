@@ -12,8 +12,10 @@ detect_arch
 KEYWORDS="x86 amd64"
 HOMEPAGE="https://github.com/minipli/linux-unofficial_grsec"
 
-HGPV_URI="https://github.com/minipli/linux-unofficial_grsec/releases/download/v4.9.51-unofficial_grsec/v4.9.51-unofficial_grsec-20170920220439.diff"
-UNIPATCH_LIST="${DISTDIR}/v4.9.51-unofficial_grsec-20170920220439.diff"
+_RELEASE="20171009084953"
+_PATCHFILE="v${PV}-unofficial_grsec-${_RELEASE}.diff"
+HGPV_URI="https://github.com/minipli/linux-unofficial_grsec/releases/download/v${PV}-unofficial_grsec/$_PATCHFILE"
+UNIPATCH_LIST="${DISTDIR}/${_PATCHFILE}"
 
 DESCRIPTION="Full sources including of the kernel tree ${KV_MAJOR}.${KV_MINOR} with GRSecurity patchset of the lastest public available version"
 SRC_URI="${KERNEL_URI} ${HGPV_URI}"
