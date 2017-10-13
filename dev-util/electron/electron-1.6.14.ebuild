@@ -30,9 +30,9 @@ PDF_VIEWER_COMMIT="a050a339cfeabcfb5f07c313161d2ee27b6c3a39"
 # Keep this in sync with vendor/pdf_viewer/vendor/grit
 GRIT_COMMIT="9536fb6429147d27ef1563088341825db0a893cd"
 # Keep this in sync with script/lib/config.py:LIBCHROMIUMCONTENT_COMMIT
-LIBCHROMIUMCONTENT_COMMIT="e2ec6935fbf034207d5ad00fa905a4b2cdd60bb7"
+LIBCHROMIUMCONTENT_COMMIT="1e4434d8846439415bc3375bf17d11e3058712fe"
 # Keep this in sync with package.json#devDependencies
-ASAR_VERSION="0.12.1"
+ASAR_VERSION="0.13.0"
 BROWSERIFY_VERSION="14.0.0"
 
 CHROMIUM_P="chromium-${CHROMIUM_VERSION}"
