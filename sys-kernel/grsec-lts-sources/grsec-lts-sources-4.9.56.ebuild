@@ -12,7 +12,7 @@ detect_arch
 KEYWORDS="x86 amd64"
 HOMEPAGE="https://github.com/minipli/linux-unofficial_grsec"
 
-_RELEASE="20171009084953"
+_RELEASE="20171013093040"
 _PATCHFILE="v${PV}-unofficial_grsec-${_RELEASE}.diff"
 HGPV_URI="https://github.com/minipli/linux-unofficial_grsec/releases/download/v${PV}-unofficial_grsec/$_PATCHFILE"
 UNIPATCH_LIST="${DISTDIR}/${_PATCHFILE}"
