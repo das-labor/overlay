@@ -17,8 +17,8 @@ IUSE="bzip2 +gnutls nls readline selinux +smartcard usb"
 
 COMMON_DEPEND_LIBS="
 	>=dev-libs/botan-2.0.0
-	dev-libs/gcovr
-	dev-libs/lcov
+	dev-util/gcovr
+	dev-util/lcov
 	gnutls? ( >=net-libs/gnutls-3.0:0= )
 	sys-libs/zlib
 	bzip2? ( app-arch/bzip2 )
