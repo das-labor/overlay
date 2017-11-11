@@ -35,22 +35,29 @@ src_unpack() {
 src_compile() {
 	if use debug
 	then
-		cargo build --debug --verbose
+		cargo build --debug --verbose --all
 	else
-		cargo build --release --verbose
+		cargo build --release --verbose --all
 	fi
 }
 
 src_install() {
-    install -D -s -m 555 "${WORKDIR}/${P}/target/release/qtpanopticon" "$D/usr/bin/qtpanopticon"
+	if use debug
+	then
+		install -D -s -m 555 "${WORKDIR}/${P}/target/debug/panopticon" "$D/usr/bin/panopticon"
+		install -D -s -m 555 "${WORKDIR}/${P}/target/debug/panop" "$D/usr/bin/panop"
+	else
+		install -D -s -m 555 "${WORKDIR}/${P}/target/release/panopticon" "$D/usr/bin/panopticon"
+		install -D -s -m 555 "${WORKDIR}/${P}/target/release/panop" "$D/usr/bin/panop"
+	fi
 	install -m 755 -d "${D}/usr/share/panopticon/qml"
-	cp -R "${WORKDIR}/${P}/qt/res/"* "${D}/usr/share/panopticon/qml"
+	cp -R "${WORKDIR}/${P}/qml/"* "${D}/usr/share/panopticon/qml"
 	chown -R root:root "${D}/usr/share/panopticon/qml"
 }
 
 src_test() {
 	if use test
 	then
-		cargo test --verbose
+		cargo test --verbose --all
 	fi
 }
