@@ -35,7 +35,7 @@ src_unpack() {
 src_compile() {
 	if use debug
 	then
-		cargo build --debug --verbose --all
+		cargo build --verbose --all
 	else
 		cargo build --release --verbose --all
 	fi
