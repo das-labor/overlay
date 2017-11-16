@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="*"
 IUSE=""
 
-RDEPEND=">=dev-embedded/libftdi-0.18
+RDEPEND="dev-embedded/libftdi:0
 	dev-python/numpy
 	>=dev-python/pexpect-3.0
 	dev-python/pyserial
@@ -29,14 +29,13 @@ DEPEND="${RDEPEND}
 
 src_compile() {
 	tc-export CC PKG_CONFIG
-	local makeargs=( EXTRA_DIRS=chromeos )
+	local makeargs=( LIBFTDI_CFLAGS="-fPIC -Wno-error" LIBFTDI_LDLIBS="-lftdi -lusb" )
 	emake "${makeargs[@]}"
 	distutils-r1_src_compile
 }
 
 src_install() {
 	local makeargs=(
-		EXTRA_DIRS=chromeos
 		DESTDIR="${D}"
 		LIBDIR=/usr/$(get_libdir)
 		UDEV_DEST="${D}$(get_udevdir)/rules.d"
