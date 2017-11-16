@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="*"
 IUSE=""
 
-RDEPEND="dev-embedded/libftdi:0
+RDEPEND="dev-embedded/libftdi:1
 	dev-python/numpy
 	>=dev-python/pexpect-3.0
 	dev-python/pyserial
