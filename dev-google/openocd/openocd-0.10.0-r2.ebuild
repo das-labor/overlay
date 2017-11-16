@@ -27,6 +27,7 @@ IUSE="+cmsis-dap dummy +ftdi +jlink parport +usb verbose-io"
 RESTRICT="strip" # includes non-native binaries
 
 RDEPEND=">=dev-lang/jimtcl-0.76
+	dev-util/shflags
 	cmsis-dap? ( dev-libs/hidapi )
 	jlink? ( dev-embedded/libjaylink )
 	usb? (

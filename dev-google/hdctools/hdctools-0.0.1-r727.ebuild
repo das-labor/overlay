@@ -29,7 +29,7 @@ DEPEND="${RDEPEND}
 
 src_compile() {
 	tc-export CC PKG_CONFIG
-	local makeargs=( LIBFTDI_CFLAGS="-fPIC -Wno-error" LIBFTDI_LDLIBS="-lftdi -lusb" )
+	local makeargs=( LIBFTDI_CFLAGS="-fPIC -Wno-error" LIBFTDI_LDLIBS="-lftdi1 -lusb" )
 	emake "${makeargs[@]}"
 	distutils-r1_src_compile
 }
