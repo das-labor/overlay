@@ -29,13 +29,14 @@ DEPEND="${RDEPEND}
 
 src_compile() {
 	tc-export CC PKG_CONFIG
-	local makeargs=( LIBFTDI_CFLAGS="-fPIC -Wno-error" LIBFTDI_LDLIBS="-lftdi1 -lusb" )
+	local makeargs=( LIBFTDI_CFLAGS="-fPIC -Wno-error -I/usr/include/libftdi1 -I/usr/include/libusb-1.0" LIBFTDI_LDLIBS="-L/usr/lib64 -lftdi1 -lusb-1.0" EXTRA_DIRS=chromeos )
 	emake "${makeargs[@]}"
 	distutils-r1_src_compile
 }
 
 src_install() {
 	local makeargs=(
+		EXTRA_DIRS=chromeos
 		DESTDIR="${D}"
 		LIBDIR=/usr/$(get_libdir)
 		UDEV_DEST="${D}$(get_udevdir)/rules.d"
