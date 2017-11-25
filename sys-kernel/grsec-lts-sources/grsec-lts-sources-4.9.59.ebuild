@@ -12,10 +12,14 @@ detect_arch
 KEYWORDS="x86 amd64"
 HOMEPAGE="https://github.com/minipli/linux-unofficial_grsec"
 
-_RELEASE="20171018143327"
+_RELEASE="20171027195919"
 _PATCHFILE="v${PV}-unofficial_grsec-${_RELEASE}.diff"
 HGPV_URI="https://github.com/minipli/linux-unofficial_grsec/releases/download/v${PV}-unofficial_grsec/$_PATCHFILE"
 UNIPATCH_LIST="${DISTDIR}/${_PATCHFILE}"
+UNIPATCH_EXCLUDE="
+	1500_XATTR_USER_PREFIX.patch
+	1520_CVE-2017-6074-dccp-skb-freeing-fix.patch
+	2900_dev-root-proc-mount-fix.patch"
 
 DESCRIPTION="Full sources including of the kernel tree ${KV_MAJOR}.${KV_MINOR} with GRSecurity patchset of the lastest public available version"
 SRC_URI="${KERNEL_URI} ${HGPV_URI}"
