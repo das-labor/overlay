@@ -15,7 +15,7 @@ LICENSE="BSD-2"
 USE="broken"
 
 RDEPEND="dev-qt/qtsingleapplication
-		 app-crypt/yubikey-manager
+		 >=app-crypt/yubikey-manager-0.5.0
 		 sys-apps/pcsc-lite
 		 app-crypt/ccid
 		 dev-python/pyside
