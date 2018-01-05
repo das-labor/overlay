@@ -7,11 +7,13 @@ DESCRIPTION="The multiversal cryptoengine!"
 HOMEPAGE="https://github.com/das-labor/neopg"
 
 GOOGLETEST_VER=1.8.0
-PEGTL_VER=2.2.0
+PEGTL_VER=2.3.0
+RANG_VER=2.1
 
 SRC_URI="https://github.com/das-labor/neopg/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/google/googletest/archive/release-${GOOGLETEST_VER}.tar.gz -> googletest-${GOOGLETEST_VER}.tar.gz
-	https://github.com/taocpp/PEGTL/archive/${PEGTL_VER}.tar.gz -> pegtl-${PEGTL_VER}.tar.gz"
+	https://github.com/taocpp/PEGTL/archive/${PEGTL_VER}.tar.gz -> pegtl-${PEGTL_VER}.tar.gz
+	https://github.com/agauniyal/rang/archive/${RANG_VER}.tar.gz -> rang-${RANG_VER}.tar.gz"
 
 LICENSE="BSD-2"
 SLOT="0"
@@ -20,8 +22,6 @@ IUSE="bzip2 +gnutls nls readline selinux +smartcard usb"
 
 COMMON_DEPEND_LIBS="
 	>=dev-libs/botan-2.0.0
-	dev-util/gcovr
-	dev-util/lcov
 	gnutls? ( >=net-libs/gnutls-3.0:0= )
 	sys-libs/zlib
 	bzip2? ( app-arch/bzip2 )
@@ -45,8 +45,12 @@ RDEPEND="${COMMON_DEPEND_LIBS}
 src_prepare() {
 	rmdir 3rdparty/googletest && mv "../googletest-release-${GOOGLETEST_VER}" 3rdparty/googletest
 	rmdir 3rdparty/pegtl && mv "../PEGTL-${PEGTL_VER}" 3rdparty/pegtl
-	mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ..
+	rmdir 3rdparty/rang && mv "../rang-${RANG_VER}" 3rdparty/rang
 	eapply_user
+}
+
+src_configure() {
+	cd build && cmake -DCMAKE_BUILD_TYPE=Release ..
 }
 
 src_compile() {
