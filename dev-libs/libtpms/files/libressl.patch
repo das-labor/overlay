@@ -1,0 +1,13 @@
+diff --git a/src/tpm12/tpm_crypto.c b/src/tpm12/tpm_crypto.c
+index 1621586..d3892fa 100644
+--- a/src/tpm12/tpm_crypto.c
++++ b/src/tpm12/tpm_crypto.c
+@@ -132,6 +132,8 @@ static TPM_RESULT TPM_SymmetricKeyData_Crypt(unsigned char *data_out,
+ 
+ #include <openssl/aes.h>
+ 
++#define OPENSSL_OLD_API
++
+ #if defined(__OpenBSD__)
+  # define OPENSSL_OLD_API
+ #else

@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit git-r3 autotools
+inherit git-r3 autotools eutils
 
 DESCRIPTION="The libtpms library provides software emulation of a Trusted Platform Module (TPM 1.2 and TPM 2)"
 HOMEPAGE="https://github.com/stefanberger/libtpms"
@@ -13,17 +13,24 @@ EGIT_TAG="master"
 LICENSE="BSD-3"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="+openssl"
+IUSE="+ssl libressl"
 
-DEPEND=""
+DEPEND="
+	ssl? (
+	    !libressl? ( dev-libs/openssl )
+		libressl? ( dev-libs/libressl )
+	)"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-   eapply_user
-   eautoreconf
+	eapply_user
+	eautoreconf
+
+	if use libressl ; then
+		epatch "${FILESDIR}/libressl.patch"
+	fi
 }
 
 src_configure() {
-	econf \
-		$(use_with openssl )
+	econf --with-openssl
 }
