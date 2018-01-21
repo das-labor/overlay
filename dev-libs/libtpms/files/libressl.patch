@@ -1,13 +1,59 @@
 diff --git a/src/tpm12/tpm_crypto.c b/src/tpm12/tpm_crypto.c
-index 1621586..d3892fa 100644
+index 1621586..a1f4ad1 100644
 --- a/src/tpm12/tpm_crypto.c
 +++ b/src/tpm12/tpm_crypto.c
-@@ -132,6 +132,8 @@ static TPM_RESULT TPM_SymmetricKeyData_Crypt(unsigned char *data_out,
- 
- #include <openssl/aes.h>
- 
-+#define OPENSSL_OLD_API
-+
- #if defined(__OpenBSD__)
-  # define OPENSSL_OLD_API
- #else
+@@ -388,18 +388,10 @@ TPM_RESULT TPM_RSAGenerateKeyPair(unsigned char **n,            /* public key -
+         }
+     }
+     if (rc == 0) {
+-#if defined OPENSSL_OLD_API
+ 	bnn = rsa->n;
+ 	bnp = rsa->p;
+ 	bnq = rsa->q;
+ 	bnd = rsa->d;
+-#else
+-	/* currently, this function accepts NULL inputs, but it's not guaranteed by the
+-	   documentation */
+-	const BIGNUM *bnetmp = NULL;	/* not needed */
+-	RSA_get0_key(rsa, &bnn, &bnetmp, &bnd);
+-	RSA_get0_factors(rsa, &bnp, &bnq);
+-#endif
+     }
+     /* load n */
+     if (rc == 0) {
+@@ -477,17 +469,9 @@ static TPM_RESULT TPM_RSAGeneratePublicToken(RSA **rsa_pub_key,		/* freed by cal
+         rc = TPM_bin2bn((TPM_BIGNUM *)&e, earr, ebytes);	/* freed by caller */
+     }
+     if (rc == 0) {
+-#if defined OPENSSL_OLD_API
+         (*rsa_pub_key)->n = n;
+         (*rsa_pub_key)->e = e;
+         (*rsa_pub_key)->d = NULL;
+-#else
+-	int irc = RSA_set0_key(*rsa_pub_key, n, e, NULL);
+-	if (irc != 1) {
+-            printf("TPM_RSAGeneratePublicToken: Error in RSA_set0_key()\n");
+-            rc = TPM_SIZE;
+-	}
+-#endif
+     }
+     return rc;
+ }
+@@ -535,17 +519,9 @@ static TPM_RESULT TPM_RSAGeneratePrivateToken(RSA **rsa_pri_key,	/* freed by cal
+         rc = TPM_bin2bn((TPM_BIGNUM *)&d, darr, dbytes);	/* freed by caller */
+     }
+     if (rc == 0) {
+-#if defined OPENSSL_OLD_API
+ 	(*rsa_pri_key)->n = n;
+         (*rsa_pri_key)->e = e;
+ 	(*rsa_pri_key)->d = d;
+-#else
+-	int irc = RSA_set0_key(*rsa_pri_key, n, e, d);
+-	if (irc != 1) {
+-            printf("TPM_RSAGeneratePrivateToken: Error in RSA_set0_key()\n");
+-            rc = TPM_SIZE;
+-	}
+-#endif
+      }
+     return rc;
+ }
