@@ -13,14 +13,17 @@ EGIT_TAG="master"
 LICENSE="BSD-3"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="+ssl"
+IUSE="+ssl libressl"
 
 DEPEND="
 	dev-libs/libtpms
 	sys-apps/gawk
 	net-misc/socat
 	dev-tcltk/expect
-	ssl? ( dev-libs/openssl )"
+	ssl? (
+	    !libressl? ( dev-libs/openssl )
+		libressl? ( dev-libs/libressl )
+	)"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
