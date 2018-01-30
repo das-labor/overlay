@@ -102,10 +102,6 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" install
 
-	doman doc/*.1
-	doman doc/*.5
-	doman doc/*.8
-
 	systemd_dounit usbguard.service
 
 	insinto /etc/usbguard
