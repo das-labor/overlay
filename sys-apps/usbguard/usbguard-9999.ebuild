@@ -29,6 +29,7 @@ DEPEND="sys-cluster/libqb
 		sys-libs/libseccomp
 		sys-libs/libcap-ng
 		dev-libs/protobuf
+		dev-ruby/asciidoctor
 		systemd? ( sys-apps/systemd )
 		dbus? ( sys-apps/dbus
 						dev-libs/dbus-glib )
@@ -102,7 +103,9 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" install
 
-	systemd_dounit usbguard.service
+	if use systemd ; then 
+		systemd_dounit usbguard.service
+	fi
 
 	insinto /etc/usbguard
 	doins usbguard-daemon.conf
