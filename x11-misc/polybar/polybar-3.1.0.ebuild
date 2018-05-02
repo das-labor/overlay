@@ -4,13 +4,17 @@
 
 EAPI=6
 
-inherit cmake-utils git-r3
+inherit cmake-utils
 
 DESCRIPTION="A fast and easy-to-use tool for creating status bars."
 HOMEPAGE="https://github.com/jaagr/polybar"
-EGIT_REPO_URI="https://github.com/jaagr/polybar.git"
-EGIT_CLONE_TYPE="shallow"
-EGIT_COMMIT="${PV}"
+I3IPCPP_VER="0.7.0"
+XPP_VER="00165e1a6d5dd61bc153e1352b21ec07fc81245d" # see https://github.com/jaagr/polybar/issues/1090
+SRC_URI="
+	https://github.com/jaagr/polybar/archive/${PV}.tar.gz -> polybar-${PV}.tar.gz
+	https://github.com/jaagr/i3ipcpp/archive/v${I3IPCPP_VER}.tar.gz -> i3ipcpp-${I3IPCPP_VER}.tar.gz
+	https://github.com/jaagr/xpp/archive/${XPP_VER}.tar.gz -> xpp-${XPP_VER}.tar.gz
+"
 
 LICENSE="MIT"
 SLOT="0"
@@ -33,6 +37,13 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 CMAKE_BUILD_TYPE=Release
+#S="${WORKDIR}/
+
+src_prepare() {
+	rm -R lib/i3ipcpp && mv ../i3ipcpp-$I3IPCPP_VER lib/i3ipcpp || die "Error"
+	rm -R lib/xpp && mv ../xpp-$XPP_VER lib/xpp || die "Error"
+	default
+}
 
 src_configure() {
 	local mycmakeargs=(
