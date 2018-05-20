@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit qmake-utils eutils
+inherit qmake-utils
 
 DESCRIPTION="Library and tool for personalization of Yubico's YubiKey NEO"
 SRC_URI="https://github.com/Yubico/yubioath-desktop/archive/${P}.tar.gz"
@@ -33,7 +33,6 @@ DEPEND="${RDEPEND}"
 S="${WORKDIR}/${PN}-${P}"
 
 src_prepare() {
-	epatch ${FILESDIR}/qtsingleapp.patch
 	eapply_user
 }
 
