@@ -7,7 +7,7 @@ inherit eutils pax-utils
 
 DESCRIPTION="The most intuitive cross-platform REST API Client"
 HOMEPAGE="https://insomnia.rest/"
-SRC_URI="https://downloads.insomnia.rest/linux/insomnia_${PV}_amd64.deb"
+SRC_URI="https://github.com/getinsomnia/insomnia/releases/download/v${PV}/insomnia_${PV}_amd64.deb"
 LICENSE="Insomnia"
 RESTRICT="mirror"
 
