@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Insomnia
+Comment=A simple and beautiful REST API client
+Exec=insomnia
+Terminal=false
+Type=Application
+Icon=insomnia
+StartupWMClass="Insomnia"
+Categories=Development
+MimeType=x-scheme-handler/insomnia;
