@@ -18,7 +18,6 @@ RDEPEND="dev-qt/qtsingleapplication
 		 >=app-crypt/yubikey-manager-0.5.0
 		 sys-apps/pcsc-lite
 		 app-crypt/ccid
-		 dev-python/pyside
 		 dev-python/pyscard
 		 dev-python/pbkdf2
 		 dev-python/pyside-tools
