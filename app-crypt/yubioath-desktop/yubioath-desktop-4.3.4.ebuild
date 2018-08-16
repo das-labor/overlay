@@ -26,7 +26,7 @@ RDEPEND="dev-qt/qtsingleapplication
 		 sys-auth/yubikey-personalization-gui
 		 dev-python/click
 		 dev-python/pyotherside
-		 dev-qt/qtsingleapplication[qt5]"
+		 dev-qt/qtsingleapplication"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${PN}-${P}"
