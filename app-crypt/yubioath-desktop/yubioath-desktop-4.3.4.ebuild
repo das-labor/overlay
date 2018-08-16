@@ -20,7 +20,6 @@ RDEPEND="dev-qt/qtsingleapplication
 		 app-crypt/ccid
 		 dev-python/pyscard
 		 dev-python/pbkdf2
-		 dev-python/pyside-tools
 		 dev-python/setuptools
 		 dev-python/pycrypto
 		 sys-auth/yubikey-personalization-gui
