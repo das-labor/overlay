@@ -13,7 +13,7 @@ EGIT_BRANCH="tpm2-preview.rev146.v2"
 LICENSE="BSD-3"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="+ssl libressl"
+IUSE="+ssl +tpm2 libressl"
 
 DEPEND="
 	ssl? (
@@ -33,4 +33,7 @@ src_prepare() {
 
 src_configure() {
 	econf --with-openssl
+	if use tpm2 ; then
+		econf --with-tpm2
+	fi
 }
