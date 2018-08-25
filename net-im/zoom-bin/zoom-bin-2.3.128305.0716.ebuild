@@ -5,7 +5,9 @@ EAPI=6
 
 DESCRIPTION="https://zoom.us/"
 HOMEPAGE="Zoom client for Linux"
-SRC_URI="https://zoom.us/client/${PV}/zoom_x86_64.tar.xz -> zoom-${PV}_x86_64.tar.xz"
+#SRC_URI="https://zoom.us/client/${PV}/zoom_x86_64.tar.xz -> zoom-${PV}_x86_64.tar.xz"
+SRC_URI="https://zoom.us/client/${PV}/zoom_x86_64.pkg.tar.xz -> zoom-${PV}_x86_64.pkg.tar.xz"
+#SRC_URI="https://d11yldzmag5yn.cloudfront.net/prod/${PV}/zoom_x86_64.pkg.tar.xz zoom-${PV}_x86_64.pkg.tar.xz"
 
 LICENSE="UNLICENSED"
 SLOT="0"
