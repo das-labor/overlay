@@ -10,7 +10,7 @@ inherit git-r3 distutils-r1 toolchain-funcs multilib udev
 DESCRIPTION="Software to communicate with servo/miniservo debug boards"
 HOMEPAGE="https://www.chromium.org/chromium-os/servo"
 EGIT_REPO_URI="https://chromium.googlesource.com/chromiumos/third_party/hdctools"
-EGIT_COMMIT="2e92ed0ae2b8c7916acd352c2e86f4fa86c7da8c"
+EGIT_COMMIT="1ae80656af2e97b3b1ae218fe318d1c8f6b4fafd"
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="*"
