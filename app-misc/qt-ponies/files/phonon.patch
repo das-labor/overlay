@@ -1,0 +1,53 @@
+From ce8c09bbf7b7a9b5ffb39cd5f38332049002bf10 Mon Sep 17 00:00:00 2001
+From: mysha <myszha@gmail.com>
+Date: Mon, 24 Feb 2014 02:47:36 +0100
+Subject: [PATCH] Disable building with sound support by default and try to fix
+ the phonon build on Arch.
+
+---
+ qt-ponies.pro | 8 ++++++--
+ src/speak.cpp | 4 ++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/qt-ponies.pro b/qt-ponies.pro
+index e330de4..a996064 100644
+--- a/qt-ponies.pro
++++ b/qt-ponies.pro
+@@ -1,8 +1,12 @@
+ QT += core gui network
+ 
++# Uncomment to enable buggy sound support. 
++# You will have to add the sounds from the Desktop Ponies project manually.
++# CONFIG += USE_SOUND
++
+ lessThan(QT_MAJOR_VERSION, 5) {
+     DEFINES += IS_QT4
+-    packagesExist(phonon) {
++    USE_SOUND:packagesExist(phonon) {
+         QT += phonon
+         DEFINES += USE_PHONON
+     }
+@@ -11,7 +15,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
+     }
+ } else {
+     QT += widgets
+-    packagesExist(phonon4qt5) {
++    USE_SOUND:packagesExist(phonon4qt5) {
+         QT += phonon4qt5
+         DEFINES += USE_PHONON
+     }
+diff --git a/src/speak.cpp b/src/speak.cpp
+index c864670..b1c272d 100644
+--- a/src/speak.cpp
++++ b/src/speak.cpp
+@@ -20,8 +20,8 @@
+ #include <sstream>
+ 
+ #ifdef USE_PHONON
+- #include <Phonon/MediaObject>
+- #include <Phonon/AudioOutput>
++ #include <phonon/MediaObject>
++ #include <phonon/AudioOutput>
+ #endif
+ 
+ #include "configwindow.h"
