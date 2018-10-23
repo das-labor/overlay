@@ -17,18 +17,19 @@ KEYWORDS="~x86 ~amd64"
 IUSE="libcap systemd"
 
 DEPEND="
-x11-libs/libxkbcommon
-dev-libs/libinput
-x11-libs/libdrm
->=dev-libs/wayland-1.16.0
-dev-libs/wayland-protocols
-virtual/libudev
-x11-libs/pixman
-media-libs/mesa[egl,gles2,gbm]
-x11-libs/libxcb
-x11-proto/xcb-proto
-libcap? ( sys-libs/libcap )
-systemd? ( sys-apps/systemd )
+	>=dev-util/meson-0.48.0
+	x11-libs/libxkbcommon
+	dev-libs/libinput
+	x11-libs/libdrm
+	>=dev-libs/wayland-1.16.0
+	dev-libs/wayland-protocols
+	virtual/libudev
+	x11-libs/pixman
+	media-libs/mesa[egl,gles2,gbm]
+	x11-libs/libxcb
+	x11-base/xcb-proto
+	libcap? ( sys-libs/libcap )
+	systemd? ( sys-apps/systemd )
 "
 RDEPEND="${DEPEND}"
 BDEPEND=""
