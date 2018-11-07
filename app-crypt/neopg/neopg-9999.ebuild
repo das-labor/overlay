@@ -49,5 +49,6 @@ src_compile() {
 }
 
 src_install() {
-	dobin build/src/neopg
+	dobin build/neopg-tool/neopg
+	dolib.so build/neopg/libneopg.so
 }
