@@ -3,11 +3,13 @@
 
 EAPI=6
 
-inherit cmake-utils
+inherit cmake-utils git-r3
 
 DESCRIPTION="A fast HEIF image converter aimed at thumbnailing"
-SRC_URI="https://github.com/monostream/tifig/archive/${PV}.tar.gz -> ${P}.tar.gz"
+EGIT_REPO_URI="https://github.com/monostream/tifig.git"
 HOMEPAGE="https://github.com/monostream/tifig"
+SRC_URI=""
+EGIT_COMMIT="${PV}"
 
 LICENSE="LGPL-2.1"
 KEYWORDS="~amd64 ~x86"
