@@ -31,5 +31,4 @@ src_configure() {
 
 src_install() {
 	dobin "${WORKDIR}/${PN}-${PV}_build/tifig"
-	dobin "${WORKDIR}/${PN}-${PV}_build/heifreader"
 }
