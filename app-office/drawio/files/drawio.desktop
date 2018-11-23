@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Draw.io
+Comment=
+GenericName=drawio
+Exec=/usr/bin/electron /usr/share/drawio/webapp
+Type=Application
+Categories=Office;
