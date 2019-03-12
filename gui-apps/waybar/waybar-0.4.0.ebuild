@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit fcaps meson
+inherit meson
 
 DESCRIPTION="Highly customizable Wayland bar for Sway and Wlroots based compositors."
 HOMEPAGE="https://github.com/Alexays/Waybar"
@@ -32,6 +32,7 @@ DEPEND="dev-libs/libinput
 	dev-libs/libnl
 	pulseaudio? ( media-sound/pulseaudio )
 	virtual/libudev
+	gui-wm/sway
 "
 RDEPEND="${DEPEND}"
 
