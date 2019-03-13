@@ -7,7 +7,7 @@ inherit meson
 
 DESCRIPTION="A lightweight Wayland notification daemon"
 HOMEPAGE="https://wayland.emersion.fr/mako"
-SRC_URI="https://github.com/emersion/${PN}/archive/v${PV}.tar.gz"
+SRC_URI="https://github.com/emersion/${PN}/archive/v${PV}.tar.gz -> mako-${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
