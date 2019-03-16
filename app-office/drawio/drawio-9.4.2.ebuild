@@ -15,7 +15,7 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	${DEPEND}
-	dev-util/electron
+	|| ( dev-util/electron dev-util/electron-bin )
 "
 BDEPEND="net-libs/nodejs[npm]"
 
