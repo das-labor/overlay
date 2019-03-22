@@ -64,4 +64,5 @@ src_install() {
 	doins -r src/main/webapp
 	insinto /usr/share/applications
 	doins "${FILESDIR}"/drawio.desktop
+	dobin "${FILESDIR}"/drawio
 }
