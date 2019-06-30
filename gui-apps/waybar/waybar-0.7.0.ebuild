@@ -33,6 +33,7 @@ DEPEND="dev-libs/libinput
 	pulseaudio? ( media-sound/pulseaudio )
 	virtual/libudev
 	gui-wm/sway
+	>=dev-libs/spdlog-1.3.1
 "
 RDEPEND="${DEPEND}"
 

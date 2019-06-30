@@ -5,9 +5,9 @@ EAPI=7
 
 inherit meson
 
-DESCRIPTION="Grab images from a Wayland compositor"
-HOMEPAGE="https://wayland.emersion.fr/grim"
-SRC_URI="https://github.com/emersion/${PN}/archive/v${PV}.tar.gz -> grim-${PV}.tar.gz"
+DESCRIPTION="Select a region in a Wayland compositor"
+HOMEPAGE="https://wayland.emersion.fr/slurp"
+SRC_URI="https://github.com/emersion/${PN}/archive/v${PV}.tar.gz -> slurp-${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -16,7 +16,7 @@ IUSE=""
 
 DEPEND="x11-libs/cairo
 		dev-libs/wayland
-		virtual/jpeg"
+		app-text/scdoc"
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
